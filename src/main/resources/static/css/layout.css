@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+.container {
+	display: flex;
+	/*コメント
+	コンテナクラスハード上書き
+	*/
+ --bs-gutter-x:0;
+ max-width: none;
+}
+.inner-content{
+	padding:2vw 0 0 3vw;
+}

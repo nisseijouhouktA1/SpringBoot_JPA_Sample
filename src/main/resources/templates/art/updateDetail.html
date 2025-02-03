@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Articleの個別ページ</title>
+	<link rel="stylesheet" type="text/css" href="/css/dropdown.css" />
+	<script src="/js/dropdown.js"></script>
+</head>
+
+<body>
+	<div layout:fragment="content" style="
+	    padding: 6vw 0 0 6vw">
+		<div style="
+		    border: groove;">
+
+			<div class="list-group">
+				<div class="d-flex gap-2 w-100 justify-content-between">
+					<div style="background: aquamarine;">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'long id : ('+ ${article.id} + ')'">(id)</h6>
+					</div>
+					<div style="background: aqua">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'String title : ('+ ${article.title} + ')'">(title)</h6>
+					</div>
+					<div style="background: beige;">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'String impressions : ('+ ${article.impressions} + ')'">(impressions)</h6>
+					</div>
+					<div style="background: antiquewhite">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'boolean iine : ('+ ${article.iine} + ')'">(iine)</h6>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<form action="/articles/update/" method="post" th:object="${article}" style="margin-top: 3.6vw;">
+			<label for="name">テスト用保存文字列:</label>
+			<input type="text" id="pageId" th:field="*{id}" hidden required>
+			<input type="text" id="name" th:field="*{title}" required>
+
+			<div class="text">ドロップダウン 評価選択</div>
+			<div class="t-dropdown-block">
+				<select name="impressions" class="t-dropdown-input" th:field="*{impressions}" value="*{impressions}"
+					required>
+					<option value="" th:selected="${impressions == ''}">--選択してください--</option>
+					<option value="very good" th:selected="${impressions == 'very good'}">very good</option>
+					<option value="good" th:selected="${impressions == 'good'}">good</option>
+					<option value="irrelevant" th:selected="${impressions == 'irrelevant'}">irrelevant</option>
+					<option value="bad" th:selected="${impressions == 'bad'}">bad</option>
+					<option value="very bad" th:selected="${impressions == 'very bad'}">very bad</option>
+				</select>
+			</div>
+			<div class="radiobottun-group" style="padding-bottom: 2vw;">
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+						value="true" th:field="*{iine}">
+					<label class="form-check-label" for="inlineRadio1">true</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+						value="false" th:field="*{iine}">
+					<label class="form-check-label" for="inlineRadio2">false</label>
+				</div>
+			</div>
+			<button type="submit">変更</button>
+		</form>
+	</div>
+</body>
+
+</html>

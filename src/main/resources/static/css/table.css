@@ -1,0 +1,103 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Montserrat", serif;
+	padding: 30px;
+}
+
+h1 {
+	font-size: 32px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+
+.myTable {
+	border-collapse: collapse;
+	text-align: left;
+	font-size: 16px;
+	table-layout: fixed;
+}
+
+.myTable td,
+.myTable th {
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	background-color: #ddd;
+	min-width: 16.6vw;
+}
+
+.myTable tr {
+	display: flex;
+	background-color: #ddd;
+}
+
+.myTable td {
+	align-content: space-evenly;
+}
+
+.myTable tr:nth-child(even) {
+	background: #ededed;
+}
+
+.myTable thead {
+	position: sticky;
+	top: 0;
+	background: #ddd;
+	z-index: 1;
+}
+
+.myTable thead th:nth-child(3),
+.myTable tbody td:nth-child(3),
+.myTable thead th:nth-child(2),
+.myTable tbody td:nth-child(2),
+.myTable thead th:nth-child(1),
+.myTable tbody td:nth-child(1) {
+	position: sticky;
+	left: 0;
+	background: #ddd;
+}
+
+.myTable thead th:nth-child(2),
+.myTable tbody td:nth-child(2) {
+	left: 100px;
+}
+
+.myTable thead th:nth-child(3),
+.myTable tbody td:nth-child(3) {
+	left: 200px;
+}
+
+.outer {
+	max-width: 500px;
+	overflow: auto;
+	max-height: 200px;
+}
+
+::-webkit-scrollbar {
+	background: #ededed;
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #ccc;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #666;
+}
+
+.only-for-td-when-hover:hover {
+	background-color: palegreen !important;
+}
+
+tbody form {
+	text-align: center;
+}

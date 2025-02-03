@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--表示されないけどタイトル入れるかどうか悩む-->
+	<link rel="stylesheet" type="text/css" href="/css/table.css" />
+
+	<script>
+	</script>
+	<link rel="stylesheet" type="text/css" href="/css/paging.css" />
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script src="/js/paging.js" defer></script>
+	<script>
+
+		function jumpToArticlePageById(pageId) {
+			document.getElementById('detailPageLink' + pageId).click();
+		}
+		function jumpToUpdateDetail(event, pageId) {
+			event.preventDefault();
+			const url = `/articles/update/${pageId}`;
+			window.location.href = url;
+		}
+		
+
+
+	</script>
+	
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<!-- 検索はペジネーションとの共生がちょっとめんどい
+		検索後にページ移動したときにそれを与えなければいけない。
+		
+		-->
+		<form action="/articles/search/" method="post" style="margin-top: 3.6vw;">
+			<label for="name">検索テスト用保存文字列:</label>
+			<input type="text" id="searchWords" name="title" th:value="${title}">
+			<input type="hidden" name="page" th:value="${page}" />
+			<button type="submit">検索</button>
+		</form>
+
+		<h1 style="position: relative;top: -10vw;left: -10vw;"></h1>
+		<!--相対リンクではなくて絶対リンクにしたい-->
+		<!--one to manyのサンプルの作成 -->
+		<!--デザインは暫定なので埋め込み-->
+		<h1>テーブル要素</h1>
+		<div class="_outer">
+			<table class="myTable">
+				<thead>
+					<th>Id</th>
+					<th style="width: -webkit-fill-available;">title</th>
+					<th style="width: -webkit-fill-available;"></th>
+					<th style="width: -webkit-fill-available;"></th>
+
+				</thead>
+				<tbody>
+					<tr th:each="article : ${articleList}">
+						<td th:attr="onclick=|jumpToArticlePageById('${article.id}')|" class="only-for-td-when-hover"
+							style="cursor: pointer;"><a th:href="@{/articles/{id}(id=${article.id})}"
+								th:id="'detailPageLink' + ${article.id}" style="text-decoration: none;color:black;"
+								aria-current="true" th:text="${article.id}">(id)</td>
+						<td th:text="${article.title}" th:attr="onclick=|jumpToArticlePageById('${article.id}')|"
+							class="only-for-td-when-hover" style="width: -webkit-fill-available;cursor: pointer;">
+							(title)</td>
+						<td>
+							<form th:action="@{/articles/delete/}" method="GET" id="deleteForm">
+								<!--隠しフォームを一個作って、submitするパターンもありだけど実装が面倒かも-->
+								<!--th:valueで無いと型が指定できないから注意-->
+								<input type="hidden" name="id" th:value="${article.id}">
+								<button type="submit" class="btn btn-primary"
+									style="margin-top: 1vw;font-variant-east-asian: proportional-width;">削除</button>
+							</form>
+						</td>
+						<!--更新ボタンを押したときの処理はまだどうするか考えてない。更新ページに飛んで更新するか日成情報みたいに更新させる感じか-->
+						<!--個別ページで更新させる場合はGETで処理-->
+						<td>
+							<form th:action="@{/}" method="GET" id="updateForm">
+								<!--隠しフォームを一個作って、submitするパターンもありだけど実装が面倒かも-->
+								<!--th:valueで無いと型が指定できないから注意-->
+								<input type="hidden" name="id" th:value="${article.id}">
+								<!--課題　ここを開発コンソールで見たときに隠ぺいできてない-->
+								<button type="button" th:attr="onclick=|jumpToUpdateDetail(event,'${article.id}')|"
+									id="aa" class="btn btn-primary"
+									style="margin-top: 1vw;margin-left: 1vw;font-variant-east-asian: proportional-width;">変更</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="forPaging" th:text="${pagingProps.totalPage}">(totalPage)</div>
+		<div id="forPagingWithSearch" th:text="${searchNeedle}">(searchNeedle)</div>
+		<div class="container-fluid pt-3">
+			<!-- pagination -->
+			<div class="row">
+				<nav class="col" id="pagination"></nav>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+
+</html>
