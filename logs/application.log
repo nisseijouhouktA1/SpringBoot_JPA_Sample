@@ -34539,3 +34539,42 @@ WHERE EXPIRY_TIME < ?
 2025-02-05T14:22:00.010+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
 WHERE EXPIRY_TIME < ?
 ]
+2025-02-05T14:23:00.011+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:23:00.012+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:24:00.016+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:24:00.016+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:25:00.005+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:25:00.005+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:26:00.009+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:26:00.009+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:27:00.008+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:27:00.008+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:28:00.023+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:28:00.023+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:29:00.006+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL update
+2025-02-05T14:29:00.006+09:00 DEBUG 23236 --- [demo] [spring-session-1] o.s.jdbc.core.JdbcTemplate               : Executing prepared SQL statement [DELETE FROM SPRING_SESSION
+WHERE EXPIRY_TIME < ?
+]
+2025-02-05T14:29:53.419+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-02-05T14:29:53.446+09:00 DEBUG 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+2025-02-05T14:29:53.460+09:00 DEBUG 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@76531a4a, started on Wed Feb 05 14:10:08 JST 2025
+2025-02-05T14:29:53.536+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-05T14:29:53.567+09:00  INFO 23236 --- [demo] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-02-05T14:29:53.594+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2025-02-05T14:29:53.595+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] o.s.i.channel.PublishSubscribeChannel    : Channel 'demo.errorChannel' has 0 subscriber(s).
+2025-02-05T14:29:53.596+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2025-02-05T14:29:53.614+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-02-05T14:29:53.637+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown initiated...
+2025-02-05T14:29:53.662+09:00  INFO 23236 --- [demo] [RMI TCP Connection(34)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown completed.
