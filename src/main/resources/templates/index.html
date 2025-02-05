@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layout/layout}">
+		<!--レイアウト継承はこちらからレイアウト側にインサートされることに注意
+			fragment以下の内容がレイアウト側にインサートされる。
+			インサート指定はコンテンツ→インサートアノテーション箇所へのインサート
+		-->
+<head>
+        <title>コンテンツその1</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<p>
+			トップページ
+		</p>
+	</div>
+	<div th:insert="~{piyo :: header}"></div>
+</body>
+</html>

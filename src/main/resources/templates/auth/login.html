@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--		レイアウトがイコールサイドバーになっているので継承しない -->
+
+<head>
+	<meta charset="UTF-8">
+	<title>ログインページ</title>
+</head>
+
+<body>
+<!--	特に埋め込みもなし -->
+	<div style="
+	    padding: 6vw 0 0 6vw">
+		<form action="/login/" method="post" th:object="${user}" style="margin-top: 3.6vw;">
+			<label for="name">名前:</label>
+			<input type="text" id="name" th:field="*{name}" required>
+			<label for="name">パスワード:</label>
+			<input type="text" id="name" th:field="*{password}" required>
+			<button type="submit">ログイン</button>
+		</form>
+	</div>
+</body>
+
+</html>

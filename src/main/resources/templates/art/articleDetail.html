@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Articleの個別ページ</title>
+</head>
+
+<body>
+	<div layout:fragment="content" style="
+	    padding: 6vw 0 0 6vw">
+		<div style="
+		    border: groove;">
+			<h4 style="background: deepskyblue;">
+				show create tableの内容：CREATE TABLE `article` (
+				`id` bigint NOT NULL AUTO_INCREMENT,
+				`title` varchar(255) DEFAULT NULL,
+				`impressions` varchar(255) DEFAULT NULL,
+				`iine` tinyint(1) DEFAULT NULL,
+				PRIMARY KEY (`id`)
+				) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+			</h4>
+			<div class="list-group">
+				<div class="d-flex gap-2 w-100 justify-content-between">
+					<div style="background: aquamarine;">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'long id : ('+ ${article.id} + ')'">(id)</h6>
+					</div>
+					<div style="background: aqua">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'String title : ('+ ${article.title} + ')'">(title)</h6>
+					</div>
+					<div style="background: beige;">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'String impressions : ('+ ${article.impressions} + ')'">(impressions)</h6>
+					</div>
+					<div style="background: antiquewhite">
+						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
+							th:text="'boolean iine : ('+ ${article.iine} + ')'">(iine)</h6>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
