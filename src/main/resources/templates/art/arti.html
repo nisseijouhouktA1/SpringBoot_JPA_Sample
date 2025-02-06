@@ -36,8 +36,12 @@
 		<!-- 検索はペジネーションとの共生がちょっとめんどい
 		検索後にページ移動したときにそれを与えなければいけない。
 		
+		csrf対策のクライアント側の実装を作るには
+		th:action="@{/hogehoge}"を使用すればおｋ
+		
 		-->
-		<form action="/articles/search/" method="post" style="margin-top: 3.6vw;">
+		<form th:action="@{/articles/search/}" method="post" style="margin-top: 3.6vw;">
+			<!-- 見えないcsrf用 inputが埋め込みされている -->
 			<label for="name">検索テスト用保存文字列:</label>
 			<input type="text" id="searchWords" name="title" th:value="${title}">
 			<input type="hidden" name="page" th:value="${page}" />

@@ -69,6 +69,7 @@
 			</div>
 		</div>
 		<form action="/articles/update/" method="POST" th:object="${article}" style="margin-top: 3.6vw;">
+			<input type="hidden" name="_csrf" value="${_csrf.token}">
 			<input type="hidden" name="id" th:value="${article.id}">
 			<button type="button" th:attr="onclick=|confirmDeletion('${article.id}')|">削除</button>
 		</form>
