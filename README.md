@@ -1,8 +1,5 @@
 現在更新中 2025 2/06
 
-Spring Securityのディレクトリ別認証とCSRFトークンでのチェックの追加の為、Postはできなくなってます。。
-csrfをなくしたい場合はFormConfigファイルとdependencyのSpringSecurity部分を削除するか全面コメントアウトしてください…
-
 初めに、
 アプリケーションの起動方法について：
 
