@@ -6,7 +6,7 @@ csrfをなくしたい場合はFormConfigファイルとdependencyのSpringSecur
 初めに、
 アプリケーションの起動方法について：
 
-Spring initializrで検索を行うと初期テンプレートをディレクトリからサくせしてくれるサイトがあります。
+Spring initializrで検索を行うと初期テンプレートをディレクトリから作成してくれるサイトがあります。
 こちらから"GENERATE"で作成してください。
 
 開発環境は こちらはJava(21),eclipse最新版(現在の2024のバージョンで大丈夫です。)
