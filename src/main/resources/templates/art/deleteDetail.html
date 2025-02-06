@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="_csrf" content="${_csrf.token}"/>
 	<title>Articleの個別ページ</title>
 	<script>
 		function confirmDeletion(articleId) {
@@ -19,12 +20,17 @@
 		function deleteArticle(articleId) {
 			// AJAXで削除リクエストを送信
 			//リクエストヘッダにキーを付加する形式のところもあるから注意すること。
+			//ajaxを使う場合はcsrf tokenの追加も変わるので気を付ける。
 			//そういう場合の実装は恐らく別ファイル
 			//apiリクエストのマッピングを別にするか(/api/delete/,等にわかりやすく分ける)は個々の場合で考える。
+			const csrfToken = document.getElementById("js_csrf").value;
 			$.ajax({
 				url: `/articles/delete/`, // 削除APIのURL
 				method: "POST", // メソッドをDELETEに変更する場合もあり
 				data: {id: articleId}, // 送信するデータ
+				headers: {
+				           'X-CSRF-TOKEN': csrfToken  // CSRF トークンをヘッダーに追加
+				       },
 				success: function (response) {
 					alert("削除が完了しました。");
 					// location.reload(); // ページをリロードして更新 (削除したため存在しない。敢えて例外ハンドラでリダイレクトさせるかここからリダイレクトさせる
@@ -68,8 +74,8 @@
 
 			</div>
 		</div>
-		<form action="/articles/update/" method="POST" th:object="${article}" style="margin-top: 3.6vw;">
-			<input type="hidden" name="_csrf" value="${_csrf.token}">
+		<form th:action="@{/articles/delete/}" method="POST" th:object="${article}" style="margin-top: 3.6vw;">
+			<input id="js_csrf" th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}"/>
 			<input type="hidden" name="id" th:value="${article.id}">
 			<button type="button" th:attr="onclick=|confirmDeletion('${article.id}')|">削除</button>
 		</form>
