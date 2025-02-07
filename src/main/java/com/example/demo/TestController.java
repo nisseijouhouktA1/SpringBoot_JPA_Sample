@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,13 @@ public class TestController {
 	 */
 	@GetMapping("/")
 	public ModelAndView index() {
+		//getAuthenticationで返ってくるやつがユーザー情報とか情報を保存したあれ。
+		//UserDetailのインスタンス。(コンフィグクラス参照のこと)
+		Authentication principal = SecurityContextHolder.getContext().getAuthentication();
+		String name = "";
+		if (principal != null) {
+			name = principal.getName();
+		}
 
 		System.out.println("HelloworldController#index");
 
@@ -43,6 +52,9 @@ public class TestController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("systemPropertyMessage", systemPropertyMessage);
 		mav.addObject("applicationYamlMessage", applicationYamlMessage);
+		//""かどうか調べるロジックをフロント側に記載する。
+		//ログアウトページを作る。
+		mav.addObject("userName", name);
 		mav.setViewName("index"); // ビュー名。Thymeleaf テンプレートファイルを指定
 
 		return mav;

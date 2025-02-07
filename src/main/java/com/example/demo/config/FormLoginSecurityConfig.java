@@ -43,6 +43,10 @@ public class FormLoginSecurityConfig {
 	 * 
 	 * セッションの有効期限は
 	 * spring.session.timeout= 20(秒指定)みたいに変更する (application.property)
+	 * 
+	 * ユーザー情報とかを使いたいとか
+	 * ログインユーザーの情報をセッションに保存とかできないか調べる。
+	 * つまりSessionに保存したログイン時の情報について他のviewやカスタムページで使用する。
 	 */
 	
     @Bean
@@ -63,6 +67,10 @@ public class FormLoginSecurityConfig {
     //UserDetailsServiceについて調べる。
     
     //テスト用の為、pass,userはそのまま
+    //こちらをデータベースから取得する形に修正する。
+    //ページ上でif:authの様に出来るか確認する。    
+    //SecurityContextHolder.getContext().getAuthentication() 
+    //上記関数でコンテキストを取得可能(つまりコントローラー側でロジックが書ける)
     
 	@Bean
     UserDetailsService userDetailsService() {
