@@ -29,12 +29,40 @@ import org.springframework.security.web.SecurityFilterChain;
 public class FormLoginSecurityConfig {
 
 	//secyruttFillterChainについて調べる。
+	
+    //カスタムしたい場合はbuild()する前に処理を挟むこと
+    //セッションに保存する生存期間を設定したい場合、
+	//https://docs.spring.io/spring-security/site/docs/6.4.2/api/org/springframework/security/web/session/package-summary.html
+	/*
+	 * HttpSession周りの資料は以下を参考
+	 * 
+	 * 
+	 * https://spring.pleiades.io/spring-security/reference/servlet/authentication/session-management.html
+	 * 
+	 * (参照)
+	 * 
+	 * セッションの有効期限は
+	 * spring.session.timeout= 20(秒指定)みたいに変更する (application.property)
+	 */
+	
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(requests -> requests.requestMatchers("/**").hasRole("USER")).formLogin(withDefaults());
+        
+        http
+        .sessionManagement(session -> session
+            .invalidSessionUrl("/login")
+        );
+     
+        //何かしら処理を挟みたい場合はここに書く。
+        //http.hogehoge().piyopiyo();
+        //ヘッダのチェックとか(フォームログインセキュリティコンフィグという名前が間違いになるけど)
+        
 		return http.build();
 	}
     //UserDetailsServiceについて調べる。
+    
+    //テスト用の為、pass,userはそのまま
     
 	@Bean
     UserDetailsService userDetailsService() {
@@ -43,5 +71,27 @@ public class FormLoginSecurityConfig {
 			.roles("USER")
 			.build();
 		return new InMemoryUserDetailsManager(user);
+		
+		//セキュリティ認証としてインメモリ認証を行っている。
+		//https://spring.pleiades.io/spring-security/reference/servlet/authentication/passwords/in-memory.html
 	}
 }
+
+/*
+ * 
+ * Security FilterChainクラスと、HttpSecurityクラス、UserDetailServiceについて
+ * ある程度自分の中で理解をしておく必要がある。
+ * UserDetails と UserDetailsService は、Spring Security の挙動をカスタマイズする際に登場するインターフェース
+ * 
+ * インターフェースの実装を見てどんなのが実装されるのかざっと見ておく。
+ *
+ * 実装クラスは一応含まれている。
+ *UserDetails // 単にユーザー情報を保存するクラス(インターフェース) 
+ * 
+ * 
+ * 
+ * https://poco-tech.com/posts/spring-security-introduction/userdetails-and-userdetailsservice/
+ * (参考)
+ * 
+ * 
+ */
