@@ -97,6 +97,10 @@
 				</tbody>
 			</table>
 		</div>
+		<!-- ↓ここに境界値の問題がある。
+			てかpaging.jsに修正箇所がある。
+			分かりやすくすることと、デバッグ環境を作ること
+		-->
 		<div id="forPaging" th:text="${pagingProps.totalPage}">(totalPage)</div>
 		<div id="forPagingWithSearch" th:text="${searchNeedle}">(searchNeedle)</div>
 		<div class="container-fluid pt-3">

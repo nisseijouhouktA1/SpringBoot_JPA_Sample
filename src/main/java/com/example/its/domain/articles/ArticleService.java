@@ -60,12 +60,14 @@ public class ArticleService {
 	//Pageable pageable = PageRequest.of(page, size); // ページ番号とページサイズを指定
 	//PageRequest.of(page, size, sort); //こっちもPageable型
 	/**
-	 * page,sizeを指定する。
+	 * 
+	 * page(pageNumber),sizeを指定する。
 	 * idで全ての要素を昇順にソートして、それからスライスしたページを取得する。
 	 * Page型ではなくList型で返している。
 	 * @param page
 	 * @param size
 	 * @return
+	 * 
 	 */
 	public List<ArticleEntity> findAllAndSortByID(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());

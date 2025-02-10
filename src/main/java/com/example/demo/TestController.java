@@ -69,22 +69,10 @@ public class TestController {
 		//articleListという指定した名前でモデルが参照できる
 		//model.addAttribute("articleList", articleService.hogepiyoJDBCBypeke("asada sada"));
 		int pageNumber = 0;
-		if (page == null) {
-			//改善余地あり。(次善策)
-			//意外とこの実装で正しかったっぽい
-			
-			//引数が足りない場合は１ページ目に全要素を表示している。
-			//	model.addAttribute("articleList", articleService.findAllByID(0, Integer.MAX_VALUE));
-			//毎回カウントを走らせるのは重い？
-			//もしそうならsessionStorageに保存しておくこと
 
-			//飛んだ時にURIを合わせたものに変更できるか調べること。
-			//	model.addAttribute("articleList", articleService.findAllByID(0,10));
-		} else {
-			//ここも若干どうかなという気はする。
-			pageNumber = (Integer.parseInt(page) - 1);
-		}
 		try {
+			//キャスト時にエラーが発生したときのリダイレクトも兼ねてる。
+			pageNumber = (Integer.parseInt(page) - 1);
 			model.addAttribute("articleList", articleService.findAllAndSortByID(pageNumber, 10));
 			model.addAttribute("pagingProps", articleService.pagingProps(pageNumber, 10));
 		} catch (Exception e) {
