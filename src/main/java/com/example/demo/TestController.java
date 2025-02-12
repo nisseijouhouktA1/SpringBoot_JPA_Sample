@@ -1,5 +1,9 @@
 package com.example.demo;
 
+import java.util.Map;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -60,38 +64,70 @@ public class TestController {
 		return mav;
 	}
 
+	//ページング関連の箇所
 	//ここのあたりをきちんと調べる
 	//モデルの受け渡し方法について
 	//thymeleafの指定方法
 	//この辺のページングはリファクタリングが必要
+	/*
+	 * Sessionを使う場合はHttpSessionを使用する。
+	 * 
+	 * */
 	@GetMapping("/articles/")
-	public String showList(@RequestParam(required = false) String page, Model model) {
+	public String showList(@RequestParam(required = false, defaultValue = "1") String page, HttpSession session,
+			Model model) {
 		//articleListという指定した名前でモデルが参照できる
 		//model.addAttribute("articleList", articleService.hogepiyoJDBCBypeke("asada sada"));
 		int pageNumber = 0;
-
+		System.out.println("*************************************** " + page);
 		try {
 			//キャスト時にエラーが発生したときのリダイレクトも兼ねてる。
+			/**
+			 *フォーマット例外：(URIを手作業で変更したというケース指定)
+			 *をキャッチしたときにURIを明示的に指定する。
+			 * 正しいフォーマットでない場合は、直前のURIに遷移する。
+			 * ページ数以上の指定も無効にする。(長谷川さん指摘)
+			 * 
+			 *URIをチェックして込み入ったアクセス制御を行う場合、URLEditorを使ってリクエストをバリデーションするといいかもしれない
+			 *直前のページとなると状態を保持している必要がある。
+			 **/
+			
+			//配列の引数的なアレで-1してるけど本当はサービス側で対応するべき部分。
 			pageNumber = (Integer.parseInt(page) - 1);
+			System.out.println("*************************************** " + pageNumber);
+			Map<String,Integer> pagengProps = articleService.pagingProps(pageNumber, 10);
+			//nullの場合があるのでオブジェクト型で
+			Integer totalPage =  pagengProps.get("totalPage");
+			if(totalPage == null || totalPage < pageNumber) {
+				//ページがでかすぎたとかの場合で例外投げをする。
+				throw new IllegalArgumentException("上記のページには移動出来ません。"); 
+			}
+			//例外発生時点でキャッチ節に飛ぶので例外が発生しないときだけ保存される。
+			session.setAttribute("previousPageNumber", pageNumber + 1);
 			model.addAttribute("articleList", articleService.findAllAndSortByID(pageNumber, 10));
-			model.addAttribute("pagingProps", articleService.pagingProps(pageNumber, 10));
+			model.addAttribute("pagingProps", pagengProps);
 		} catch (Exception e) {
-
-			model.addAttribute("articleList", articleService.findAllAndSortByID(0, 10));
-			//articleListをページ番号を含めたモデルpagingとして扱うか、それとも別に使うかは悩みどころかもしれない。
-			model.addAttribute("pagingProps", articleService.pagingProps(0, 10));
+			
+			System.out.println(e.getMessage());
+			String previousPageNumber = session.getAttribute("previousPageNumber").toString();
+			if(previousPageNumber == null || previousPageNumber.isEmpty() || !previousPageNumber.matches("\\d+") ){
+				//初期化
+				previousPageNumber = "1";
+			}
+			//例外発生時にはリダイレクトを行う。
+			//一番最新の正しく遷移できたページにリダイレクトする。
+			 return "redirect:/articles/?page="+ previousPageNumber;
 		}
-
 		return "art/arti";
 	}
-	
+
 	@GetMapping("/login/")
 	public String showLogin(Model model) {
 		ArticleEntity article = new ArticleEntity();
 		article.setId(1);
 		article.setIine(false);
 		article.setTitle("asada");
-		model.addAttribute("article",article);
+		model.addAttribute("article", article);
 		return "auth/login";
 	}
 
@@ -134,7 +170,7 @@ public class TestController {
 
 	@GetMapping("/articles/update/{id}")
 	public String showUpdatePage(@PathVariable Long id, Model model) {
-		// 動的にページを作成するロジック
+		// 動的にページを作成するロジック\
 		//例外処理の機構は一元化するため、ここには記述しない。
 		//Optional型だけどなんかキャストされてる？
 		ArticleEntity article = articleService.findById(id)
@@ -188,61 +224,59 @@ public class TestController {
 	}
 
 	//URIとリクエストクエリのパラメータを使用しようとしてる。
+
+	///articles/search/?page = 1,2,3....の時、/articles/?page = 1,2,3....を分けた場合について、
+	///
+	///メリット：
+	///明確な意図: /articles/search/ にすることで、ユーザーが検索結果を閲覧していることが明確になります。
+	///検索機能を前面に出すことで、ユーザーにとって検索の結果を見ているという意図が伝わりやすいです。
+	///検索結果の状態を保持: 検索条件（例えば、キーワード、フィルタ、カテゴリなど）を URL に含めることで、
+	///検索条件を保持したままページ遷移ができます。例えば、/articles/search/?page=2&search=keyword とすることで、
+	///search クエリを使ったページングを維持できます。
+	///
+	///デメリット：
+	///
+	///実装が複雑になる(特にフロント側)
+	///
+	///リダイレクトを用いてsearch→クエリパラメータ付与→articlesに移動というようにできないだろうか。]
+	///
+	///こういう場合に、ページ用のエンティティがあると便利になる。
+	///
+	///
+	///検索処理は/articles/に統合する。
+	///
+	///
+	///
 	@PostMapping("/articles/search/")
-	public String postSearchAnythingTest(@RequestParam String page, @RequestParam(defaultValue = "") String title, Model model) {
-		
-		//defaultValue=""としたばあいもフィルターされることに注意
-		//むしろ検索ワード(title)をnullかそれ以外かで場合分けしたほうがいいかも
-		
-		
-		//Serviceにリポジトリ層のデータ処理を全部記述するか、こっちにもってきてもおｋにするかはわかんない。
-		//saveとかはあれspringの命名パターンをチートシートとして用意する。
-		//バインディングを無視する場合サービスクラスでの軌道修正が必要。
+	public String postSearchAnythingTest(@RequestParam String page, @RequestParam(defaultValue = "") String title,
+			Model model) {
+
 		//意外とこの実装で正しかったっぽい
 
-		//こめんとあうと　1/28
 		model.addAttribute("article", new ArticleEntity());
 
 		model.addAttribute("currentPage", page);
 		model.addAttribute("query", title);
-		//これはどうなの？って思うんだけど、search→ridirectでarticlesに行くみたいなの出来ないのかなって思う。
-		//この辺は課題とする。
-		//とりあえず書く
-		
-		//defaultValue=""で初期値を指定する。
-		//URLマッピングについて問題がないか調べる。
-		//もしかしたらsearchではなく、GetMappingで検索も含め扱ったほうがシンプルになると思う。(結果が同じなので)
-		//わざわざ/articles/search/と/articles/に分ける必要性が薄い。
-		
-		
-		int pageNumber = 0;
-		if (page == null || page.isEmpty()) {
-			//改善余地あり。(次善策)
-			//引数が足りない場合は１ページ目に全要素を表示している。
-			//	model.addAttribute("articleList", articleService.findAllByID(0, Integer.MAX_VALUE));
-			//毎回カウントを走らせるのは重い？
-			//もしそうならsessionStorageに保存しておくこと
 
-			//飛んだ時にURIを合わせたものに変更できるか調べること。
-			//	model.addAttribute("articleList", articleService.findAllByID(0,10));
-		} else {
-			//ここも若干どうかなという気はする。
-			pageNumber = (Integer.parseInt(page) - 1);
-		}
-		
+		int pageNumber = 0;
+
 		//count用のにもに使われる初期化処理
-		
-		//だいぶひどくなってきた
-		//この辺の初期化処理はひどいかも
-		Integer listSize = articleService.findAllByTitle(pageNumber, 10, title).size();
+		//search用の処理をarticlesに追加する。(共通処理なので、)
+		//ページに使用するリスト
+		Integer listSize = 0;
 		try {
+			pageNumber = (Integer.parseInt(page) - 1);
+			listSize = articleService.findAllByTitle(pageNumber, 10, title).size();
 			model.addAttribute("articleList", articleService.findAllByTitle(pageNumber, 10, title));
-			model.addAttribute("pagingProps", articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10,listSize));
+			model.addAttribute("pagingProps",
+					articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10, listSize));
+			//debug
 		} catch (Exception e) {
 
-			model.addAttribute("articleList", articleService.findAllByTitle(0, 10, title));
+			model.addAttribute("articleList",
+					articleService.findAllByTitle(0, 10, title));
 			//articleListをページ番号を含めたモデルpagingとして扱うか、それとも別に使うかは悩みどころかもしれない。
-			model.addAttribute("pagingProps", articleService.pagingPropsWithSearchNeedle_forTemp(0, 10,listSize));
+			model.addAttribute("pagingProps", articleService.pagingPropsWithSearchNeedle_forTemp(0, 10, listSize));
 		}
 		//クエリ保存の方法その1
 		//次善策、リファクタ対象
@@ -254,8 +288,9 @@ public class TestController {
 		} else {
 			;
 		}
-		model.addAttribute("searchFlag",flag);
-		model.addAttribute("searchNeedle",title);
+		model.addAttribute("searchFlag", flag);
+		model.addAttribute("searchNeedle", title);
+		model.addAttribute("debug_listSize", listSize);
 
 		//リダイレクト時に上書きされて消えてる。。
 		//return "redirect:/articles/?page=" + (pageNumber + 1) + "&query=" + title;

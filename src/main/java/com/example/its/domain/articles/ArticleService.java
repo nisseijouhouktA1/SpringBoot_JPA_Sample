@@ -80,8 +80,21 @@ public class ArticleService {
 	//切り離して考えることがむつかしい。
 	//密結合なメソッドになるかも
 	//これでいいのかあんまりわからない。
-
+	
 	//ストリームで十分な気がするけど確かではない。
+	/**
+	 * 
+	 * page,size,title(検索語句)を指定する。
+	 *検索語句をタイトルに含む要素をリストにして返す。
+	 *
+	 *
+	 * Page型ではなくList型で返している。
+	 * @param Int page
+	 * @param Int size
+	 * @param String title
+	 * @return
+	 * 
+	 */
 	public List<ArticleEntity> findAllByTitle(int page, int size, String title) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
 		if (title == null || title.isEmpty()) {
