@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
@@ -91,33 +92,111 @@ public class TestController {
 			 *URIをチェックして込み入ったアクセス制御を行う場合、URLEditorを使ってリクエストをバリデーションするといいかもしれない
 			 *直前のページとなると状態を保持している必要がある。
 			 **/
-			
+
 			//配列の引数的なアレで-1してるけど本当はサービス側で対応するべき部分。
 			pageNumber = (Integer.parseInt(page) - 1);
 			System.out.println("*************************************** " + pageNumber);
-			Map<String,Integer> pagengProps = articleService.pagingProps(pageNumber, 10);
+			Map<String, Integer> pagengProps = articleService.pagingProps(pageNumber, 10);
 			//nullの場合があるのでオブジェクト型で
-			Integer totalPage =  pagengProps.get("totalPage");
-			if(totalPage == null || totalPage < pageNumber) {
+			Integer totalPage = pagengProps.get("totalPage");
+			if (totalPage == null || totalPage < pageNumber) {
 				//ページがでかすぎたとかの場合で例外投げをする。
-				throw new IllegalArgumentException("上記のページには移動出来ません。"); 
+				throw new IllegalArgumentException("上記のページには移動出来ません。");
 			}
 			//例外発生時点でキャッチ節に飛ぶので例外が発生しないときだけ保存される。
 			session.setAttribute("previousPageNumber", pageNumber + 1);
 			model.addAttribute("articleList", articleService.findAllAndSortByID(pageNumber, 10));
 			model.addAttribute("pagingProps", pagengProps);
 		} catch (Exception e) {
-			
+
 			System.out.println(e.getMessage());
 			String previousPageNumber = session.getAttribute("previousPageNumber").toString();
-			if(previousPageNumber == null || previousPageNumber.isEmpty() || !previousPageNumber.matches("\\d+") ){
+			if (previousPageNumber == null || previousPageNumber.isEmpty() || !previousPageNumber.matches("\\d+")) {
 				//初期化
 				previousPageNumber = "1";
 			}
 			//例外発生時にはリダイレクトを行う。
 			//一番最新の正しく遷移できたページにリダイレクトする。
-			 return "redirect:/articles/?page="+ previousPageNumber;
+			return "redirect:/articles/?page=" + previousPageNumber;
 		}
+		return "art/arti";
+	}
+
+	/* *
+	 * search用のマッピング
+	 * 他にもsortや逆順での表示とか条件を保持してページングしたい場合はPostにマッピングする。
+	 * 
+	 * 
+	 * 検索ボタンを押してきたパターンとページングで来た場合を区別する必要がある。
+	 * 
+	 * 現状は検索なし→GetMapping("/articles/")
+	 * 
+	 * 検索あり→PostMapping("/articles/")となっている。
+	 * 
+	 * この辺のマッピングは整理の余地があると思う。
+	 *
+	 * */
+	@PostMapping("/articles/")
+	public String searchList(@RequestParam(required = false, defaultValue = "1") String page,
+			@RequestParam(defaultValue = "") String title,
+			@RequestParam(required = false, defaultValue = "true") String firstSearch, HttpSession session,
+			Model model) {
+
+		int pageNumber = 0;
+
+		System.out.println("*************************************** " + page);
+		try {
+
+			//配列の引数的なアレで-1してるけど本当はサービス側で吸収するべき。
+			pageNumber = (Integer.parseInt(page) - 1);
+			System.out.println("*************************************** " + pageNumber);
+			Map<String, Integer> pagengProps = articleService.pagingProps(pageNumber, 10);
+			//nullの場合があるのでオブジェクト型で
+			//あーもう酷いコード。。(この時点で全体のページ数)
+			Integer totalPage = pagengProps.get("totalPage");
+			if (totalPage == null || totalPage < pageNumber || title == "") {
+				//ページがでかすぎたとかの場合で例外投げをする。
+				throw new IllegalArgumentException("移動できないページの例外に検索語句がない場合を足した感じの例外");
+			}
+			List<ArticleEntity> articleList = articleService.findAllByTitle(pageNumber, 10, title);
+
+			model.addAttribute("debug_listSize", totalPage);
+			//例外発生時点でキャッチ節に飛ぶので例外が発生しないときだけ保存される。
+			session.setAttribute("previousPageNumber", pageNumber + 1);
+			//firstSearchが"true"の時以外は、セッションに状態を保存し次のページングでの遷移に使用する。
+			if (firstSearch != "false") {
+				//初期検索時には初期化する。
+				//このif文は状態保持を行う変数の数が増えた分だけ拡張する。
+				session.setAttribute("searchNeedle", "");
+			}
+
+			model.addAttribute("query", title);
+			model.addAttribute("articleList", articleList);
+			model.addAttribute("pagingProps",
+					articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10,title));
+			model.addAttribute("pa", articleList.size());
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+			String previousPageNumber = session.getAttribute("previousPageNumber").toString();
+			if (previousPageNumber == null || previousPageNumber.isEmpty() || !previousPageNumber.matches("\\d+")) {
+				//初期化
+				previousPageNumber = "1";
+			}
+			//例外発生時にはリダイレクトを行う。
+			//一番最新の正しく遷移できたページにリダイレクトする。
+			return "redirect:/articles/?page=" + previousPageNumber;
+		}
+
+		boolean flag = false;
+		if (title == null || title.isEmpty()) {
+			flag = !flag;
+		} else {
+			;
+		}
+		model.addAttribute("searchFlag", flag);
+		model.addAttribute("searchNeedle", title);
 		return "art/arti";
 	}
 
@@ -269,14 +348,14 @@ public class TestController {
 			listSize = articleService.findAllByTitle(pageNumber, 10, title).size();
 			model.addAttribute("articleList", articleService.findAllByTitle(pageNumber, 10, title));
 			model.addAttribute("pagingProps",
-					articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10, listSize));
+					articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10, title));
 			//debug
 		} catch (Exception e) {
 
 			model.addAttribute("articleList",
 					articleService.findAllByTitle(0, 10, title));
 			//articleListをページ番号を含めたモデルpagingとして扱うか、それとも別に使うかは悩みどころかもしれない。
-			model.addAttribute("pagingProps", articleService.pagingPropsWithSearchNeedle_forTemp(0, 10, listSize));
+			model.addAttribute("pagingProps", articleService.pagingPropsWithSearchNeedle_forTemp(0, 10, title));
 		}
 		//クエリ保存の方法その1
 		//次善策、リファクタ対象

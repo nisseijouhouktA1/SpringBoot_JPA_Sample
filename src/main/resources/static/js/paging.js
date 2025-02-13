@@ -5,6 +5,7 @@
 
 //fixed
 let maxPage = parseInt(document.querySelector("#forPaging").textContent) + 1;
+let search = document.querySelector("#forSearch").textContent;
 let visiblePage = 0;
 
 $(function() {
@@ -53,7 +54,8 @@ function createPagination(currentPage) {
 	 *つまり startPage == endPageは変わりません。
 	 * 
 	 **/
-	if (startPage < 1) {
+
+	 	if (startPage < 1) {
 		endPage += -(startPage - 1);
 		startPage = 1;
 	}
@@ -94,8 +96,6 @@ function loadPageContent(currentPage) {
 		method: "GET",
 		success: function(data) {
 			// ページの内容を更新
-			$("#content").html(data); // ここでコンテンツを更新
-			// URLを更新
 			updateURI(currentPage);
 
 			// コンテンツ更新後にページのリフレッシュ
@@ -105,6 +105,23 @@ function loadPageContent(currentPage) {
 			console.error("ページデータのロードに失敗しました");
 		},
 	});
+}
+
+/** 
+ *
+ * 拡張時には可変引数で対応、合致する引数名が無ければ特に何もしない。
+ * 上記ページロード関数で検索などの変数が関係してくる場合に使用する。
+ * クエリパラメータで対応する場合はGETで対応できる。
+ * 検索フォームの該当inputに値を入れて単純にPostをする形式。
+
+ * 空文字対応をコントローラ側で徹底すること。
+ **/
+function searchedPageContent(currentPage = 1) {	
+	
+		// POSTリクエストで送信するデータ	    
+	$("#searchWords").val(search);
+	$("#searchPage").val(currentPage);
+	$("#searchForm").submit();
 }
 
 /**
@@ -147,6 +164,13 @@ function createPaginationLink(currentPage, label, isEnable) {
 	).html(
 		`<div class="text-center" style="width: 1.5rem">${label}</div>`
 	);
+	if(search != ""){
+		pageLink = $(
+				`<a class="page-link" href="javascript:searchedPageContent(${currentPage});">`
+			).html(
+				`<div class="text-center" style="width: 1.5rem">${label}</div>`
+			);
+	}
 	let pageItem = $('<li class="page-item">').html(pageLink);
 	if (!isEnable || document.getElementById('forPaging').textContent == '0') {
 		pageItem.addClass("disabled");

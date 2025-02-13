@@ -145,6 +145,10 @@ public class ArticleService {
 		return articleRepository.findById(id);
 	}
 
+	/*
+	 * 
+	 * 
+	 * */
 	public Map<String, Integer> pagingProps(Integer currentPage, Integer pageSize) {
 		Map<String, Integer> pageInfo = new HashMap<>();
 		//毎読み込みこれだと怒られる可能性もある。
@@ -157,10 +161,11 @@ public class ArticleService {
 	
 	//早急にリファクタリングが必要な実装
 	//listが存在する検索後にしか使用してはいけない関数
-	public Map<String, Integer> pagingPropsWithSearchNeedle_forTemp(Integer currentPage, Integer pageSize,Integer listSize) {
+	public Map<String, Integer> pagingPropsWithSearchNeedle_forTemp(Integer currentPage, Integer pageSize,String title) {
 		Map<String, Integer> pageInfo = new HashMap<>();
-		//毎読み込みこれだと怒られる可能性もある。
-		Integer totalPage = listSize / pageSize;
+		Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").ascending());
+		//修正 ページサイズの取得はPageableを使って取得。
+		Integer totalPage = articleRepository.findAllByTitleContainingValues(title, pageable).getTotalPages() - 1;
 		pageInfo.put("totalPage", totalPage);
 		//hashMapってこういう使い方してよかったっけ？
 		pageInfo.put("currentPage", currentPage);

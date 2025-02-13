@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta th:name="_csrf" th:content="${_csrf.token}">
 	<!--表示されないけどタイトル入れるかどうか悩む-->
 	<link rel="stylesheet" type="text/css" href="/css/table.css" />
 
@@ -40,11 +41,11 @@
 		th:action="@{/hogehoge}"を使用すればおｋ
 		
 		-->
-		<form th:action="@{/articles/search/}" method="post" style="margin-top: 3.6vw;">
+		<form id="searchForm" th:action="@{/articles/}" method="post" style="margin-top: 3.6vw;">
 			<!-- 見えないcsrf用 inputが埋め込みされている -->
 			<label for="name">検索テスト用保存文字列:</label>
 			<input type="text" id="searchWords" name="title" th:value="${title}">
-			<input type="hidden" name="page" th:value="${page}" />
+			<input id="searchPage" type="hidden" name="page" th:value="${page}" />
 			<button type="submit">検索</button>
 		</form>
 
@@ -100,9 +101,20 @@
 		<!-- ↓ここに境界値の問題がある。
 			てかpaging.jsに修正箇所がある。
 			分かりやすくすることと、デバッグ環境を作ること
+			
+			検索ワード追加時にPostに送信するよう変更する必要がある。
+			ページング機能はpaging.jsと密結合になっている。
+			タイムリーフ側に寄せるか、jsで対応するか、他の手段考えるか
+			
+			<a class="page-link" href="javascript:loadPageContent(2)>
+				ここをPostに変更する。
+				aタグで無い方が良いかもしれない。
+				debug_listSizeは大本のリストサイズ
+				forSearch
 		-->
 		<div id="forPaging" th:text="${pagingProps.totalPage}">(totalPage)</div>
-		<div id="forPagingWithSearch" th:text="${searchNeedle}">(searchNeedle)</div>
+		<div id="forSearch" th:text="${searchNeedle}">(searchNeedle)</div>
+		<div id="forPagingWithSearch2" th:text="${pa}">(pa)</div>
 		<div id="forPagingWithSearch2" th:text="${debug_listSize}">(debug_listSize)</div>
 		<div class="container-fluid pt-3">
 			<!-- pagination -->
