@@ -3,20 +3,28 @@
  * 
  **/
 
-//fixed
 let maxPage = parseInt(document.querySelector("#forPaging").textContent) + 1;
 let search = document.querySelector("#forSearch").textContent;
 let visiblePage = 0;
 
 $(function() {
 	// 初期のページ番号を取得
+	//Postで得た状態保持変数があった場合は優先する。
 	let currentPage = parseInt(getQueryParam("page")) || 1;
+	currentPage = parseInt(document.querySelector("#forPagingCurrentPage").textContent)+1 || currentPage;
+		window.history.pushState({}, '', '/articles/?page=' + currentPage);
 	refreshPagination(currentPage);
+	if($("#forSearch").text() == ''){
 	loadPageContent(currentPage); // ページの内容をロード
+	} else{
+		//searchパターンのための1行
+		//searchedPageContent(currentPage);
+	}
 });
 
 /**
- * paginationを再生成
+ * 遷移時にpaginationを再生成
+ *
  */
 function refreshPagination(currentPage) {
 	$("#pagination").empty();
@@ -122,6 +130,11 @@ function searchedPageContent(currentPage = 1) {
 	$("#searchWords").val(search);
 	$("#searchPage").val(currentPage);
 	$("#searchForm").submit();
+	/*
+	incrementとdecrementを区別する。
+	
+	 */
+//	updateURI(2);
 }
 
 /**

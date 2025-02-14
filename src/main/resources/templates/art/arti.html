@@ -26,7 +26,8 @@
 			window.location.href = url;
 		}
 		
-
+$(function(){}
+)
 
 	</script>
 	
@@ -43,7 +44,7 @@
 		-->
 		<form id="searchForm" th:action="@{/articles/}" method="post" style="margin-top: 3.6vw;">
 			<!-- 見えないcsrf用 inputが埋め込みされている -->
-			<label for="name">検索テスト用保存文字列:</label>
+			<label for="searchWords">検索テスト用保存文字列:</label>
 			<input type="text" id="searchWords" name="title" th:value="${title}">
 			<input id="searchPage" type="hidden" name="page" th:value="${page}" />
 			<button type="submit">検索</button>
@@ -114,8 +115,7 @@
 		-->
 		<div id="forPaging" th:text="${pagingProps.totalPage}">(totalPage)</div>
 		<div id="forSearch" th:text="${searchNeedle}">(searchNeedle)</div>
-		<div id="forPagingWithSearch2" th:text="${pa}">(pa)</div>
-		<div id="forPagingWithSearch2" th:text="${debug_listSize}">(debug_listSize)</div>
+		<div style="display: none;" id="forPagingCurrentPage" th:text="${pagingProps.currentPage}">(currentPage)</div>
 		<div class="container-fluid pt-3">
 			<!-- pagination -->
 			<div class="row">

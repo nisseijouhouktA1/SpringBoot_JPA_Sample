@@ -172,6 +172,7 @@ public class TestController {
 
 			model.addAttribute("query", title);
 			model.addAttribute("articleList", articleList);
+			System.out.println("***********************************************************"+pageNumber + "+++++++++++++++++++++++++++++++++++");
 			model.addAttribute("pagingProps",
 					articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10,title));
 			model.addAttribute("pa", articleList.size());
@@ -302,86 +303,6 @@ public class TestController {
 		return "art/displayDataSubmittedByForm";
 	}
 
-	//URIとリクエストクエリのパラメータを使用しようとしてる。
-
-	///articles/search/?page = 1,2,3....の時、/articles/?page = 1,2,3....を分けた場合について、
-	///
-	///メリット：
-	///明確な意図: /articles/search/ にすることで、ユーザーが検索結果を閲覧していることが明確になります。
-	///検索機能を前面に出すことで、ユーザーにとって検索の結果を見ているという意図が伝わりやすいです。
-	///検索結果の状態を保持: 検索条件（例えば、キーワード、フィルタ、カテゴリなど）を URL に含めることで、
-	///検索条件を保持したままページ遷移ができます。例えば、/articles/search/?page=2&search=keyword とすることで、
-	///search クエリを使ったページングを維持できます。
-	///
-	///デメリット：
-	///
-	///実装が複雑になる(特にフロント側)
-	///
-	///リダイレクトを用いてsearch→クエリパラメータ付与→articlesに移動というようにできないだろうか。]
-	///
-	///こういう場合に、ページ用のエンティティがあると便利になる。
-	///
-	///
-	///検索処理は/articles/に統合する。
-	///
-	///
-	///
-	@PostMapping("/articles/search/")
-	public String postSearchAnythingTest(@RequestParam String page, @RequestParam(defaultValue = "") String title,
-			Model model) {
-
-		//意外とこの実装で正しかったっぽい
-
-		model.addAttribute("article", new ArticleEntity());
-
-		model.addAttribute("currentPage", page);
-		model.addAttribute("query", title);
-
-		int pageNumber = 0;
-
-		//count用のにもに使われる初期化処理
-		//search用の処理をarticlesに追加する。(共通処理なので、)
-		//ページに使用するリスト
-		Integer listSize = 0;
-		try {
-			pageNumber = (Integer.parseInt(page) - 1);
-			listSize = articleService.findAllByTitle(pageNumber, 10, title).size();
-			model.addAttribute("articleList", articleService.findAllByTitle(pageNumber, 10, title));
-			model.addAttribute("pagingProps",
-					articleService.pagingPropsWithSearchNeedle_forTemp(pageNumber, 10, title));
-			//debug
-		} catch (Exception e) {
-
-			model.addAttribute("articleList",
-					articleService.findAllByTitle(0, 10, title));
-			//articleListをページ番号を含めたモデルpagingとして扱うか、それとも別に使うかは悩みどころかもしれない。
-			model.addAttribute("pagingProps", articleService.pagingPropsWithSearchNeedle_forTemp(0, 10, title));
-		}
-		//クエリ保存の方法その1
-		//次善策、リファクタ対象
-		//デバッグ用の１行
-		//		System.out.println(title); 
-		boolean flag = false;
-		if (title == null || title.isEmpty()) {
-			flag = !flag;
-		} else {
-			;
-		}
-		model.addAttribute("searchFlag", flag);
-		model.addAttribute("searchNeedle", title);
-		model.addAttribute("debug_listSize", listSize);
-
-		//リダイレクト時に上書きされて消えてる。。
-		//return "redirect:/articles/?page=" + (pageNumber + 1) + "&query=" + title;
-
-		//解決策として検索欄を常にチェックするようにして(多分それ周りでモデルとか作ったほうがいいとか出てくるかも)
-		//ペジネーション時に送るようにする。次善策その3ぐらいか…
-
-		//禁断のsearch結果フラグがあったら送って～をthymeleaf側に作成する。
-		//完全に禁じ手なのでリファクタリング前提の実装になる。(突貫工事)
-
-		return "art/arti";
-	}
 
 	/*
 	 *One to Many
