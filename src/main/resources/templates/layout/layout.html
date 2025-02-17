@@ -15,6 +15,9 @@
 			integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body style="padding: 0;font-family: serif;">
+	<!--navBar ここに入れる。-->
+	<nav layout:replace="~{layout/navbar::header}"></nav>
+	<!--sideBar ここにいれる。-->
 	<div class="container">
 	<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
 	    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
@@ -59,8 +62,7 @@
 		  	<a class="nav-link text-white" href="./art/arti.html" th:href="@{/articles/}">記事一覧(ペジネーションテスト)</a>
 		  </li>
 	    </ul>
-	    <hr>
-	    
+	    <hr>	    
 	  </div>
 	  <main class="inner-content" layout:fragment="content">
 		コンテンツを表示するばしょ
