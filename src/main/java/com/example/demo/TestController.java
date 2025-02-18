@@ -48,7 +48,7 @@ public class TestController {
 			name = principal.getName();
 		}
 
-		System.out.println("HelloworldController#index");
+		System.out.println("++++++++++++++++++"+name);
 
 		// システム・プロパティから取得
 		String systemPropertyMessage = System.getProperty("com.example.demo.message");

@@ -15,3 +15,54 @@ body {
 .inner-content{
 	padding:2vw 0 0 3vw;
 }
+
+.animate {
+   animation-duration: 0.5s;
+   -webkit-animation-duration: 0.5s;
+   animation-fill-mode: both;
+   -webkit-animation-fill-mode: both;
+ }
+ 
+ @keyframes slideIn {
+   0% {
+     transform: translateY(0);
+     opacity: 0;
+   }
+
+   100% {
+     transform: translateY(0);
+     opacity: 1;
+   }
+
+   0% {
+     transform: translateY(5rem);
+     opacity: 0;
+   }
+ }
+ 
+ @-webkit-keyframes slideIn {
+   0% {
+     -webkit-transform: transform;
+     -webkit-opacity: 0;
+   }
+
+   100% {
+     -webkit-transform: translateY(0);
+     -webkit-opacity: 1;
+   }
+
+   0% {
+     -webkit-transform: translateY(0);
+     -webkit-opacity: 0;
+   }
+ }
+
+ .slideIn {
+   -webkit-animation-name: slideIn;
+   animation-name: slideIn;
+ }
+
+.btn-group > .dropdown-menu[data-bs-popper]{
+top: 120%;
+left: -9vw;	
+}

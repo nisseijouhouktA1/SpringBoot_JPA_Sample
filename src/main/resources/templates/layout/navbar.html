@@ -8,11 +8,20 @@
 	<nav layout:fragment="header" class="navbar navbar-dark bg-dark static-top">
 
 	  <a class="navbar-brand mr-1" href="/">Start Bootstrap</a>
-
-	  <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-	    <i class="fas fa-bars"></i>
-	  </button>
-	  <a th:href="@{/logout}" style="text-decoration:none;" aria-current="true">ログアウト</a>
+	
+	  <div class="btn-group">
+	    <button type="button"  style="background-color:transparent;font-size: small;" class="btn dropdown-toggle material-symbols-outlined" data-bs-toggle="dropdown" aria-expanded="false">
+			<span style="color: white;" class="material-symbols-outlined">
+			density_small
+			</span>
+	    </button>
+	    <ul class="dropdown-menu animate slideIn">
+	      <li><a id="userNameHere" class="dropdown-item" href="#">(ユーザー名)</a></li>
+	      <li><a class="dropdown-item" href="#">DashBoard link here</a></li>
+	      <li><hr class="dropdown-divider"></li>
+	      <li class="text-center"><a th:href="@{/logout}" style="text-decoration:none;" aria-current="true">ログアウト</a></li>
+	    </ul>
+	  </div>
 	  <!-- Navbar Search -->
 	  <!--
 	  <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
