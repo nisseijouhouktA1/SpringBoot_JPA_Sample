@@ -3,22 +3,27 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="_csrf" content="${_csrf.token}"/>
+	<meta name="_csrf" content="${_csrf.token}" />
 	<title>Articleの個別ページ</title>
 	<script>
 		function confirmDeletion(articleId) {
-			// 確認ポップアップの表示
-			const userConfirmed = confirm("本当に削除しますか？");
+			// 確認モーダルに変更
+			//はいがクリックされたときだけ実行
 
-			// ユーザーが "OK" を押した場合のみ削除を実行
-			if (userConfirmed) {
-				// 削除処理の実行
+			//	window.asad = articleId; デバッグ
+			console.log(articleId);
+			if (isNaN(articleId) || articleId <= 0) {
+				
+				return;
+				
+			} else {
+				// ユーザーが "OK" を押した場合のみ削除を実行
 				deleteArticle(articleId);
 			}
 		}
 
 		function deleteArticle(articleId) {
-			// AJAXで削除リクエストを送信
+			// ajaxで削除リクエストを送信
 			//リクエストヘッダにキーを付加する形式のところもあるから注意すること。
 			//ajaxを使う場合はcsrf tokenの追加も変わるので気を付ける。
 			//そういう場合の実装は恐らく別ファイル
@@ -29,13 +34,13 @@
 				method: "POST", // メソッドをDELETEに変更する場合もあり
 				data: {id: articleId}, // 送信するデータ
 				headers: {
-				           'X-CSRF-TOKEN': csrfToken  // CSRF トークンをヘッダーに追加
-				       },
+					'X-CSRF-TOKEN': csrfToken  // CSRF トークンをヘッダーに追加
+				},
 				success: function (response) {
 					alert("削除が完了しました。");
 					// location.reload(); // ページをリロードして更新 (削除したため存在しない。敢えて例外ハンドラでリダイレクトさせるかここからリダイレクトさせる
-				    //かは場合によるかも)
-					window.location.href =('/articles/');
+					//かは場合によるかも)
+					window.location.href = ('/articles/');
 				},
 				error: function (xhr, status, error) {
 					console.error("削除に失敗しました:", error);
@@ -43,12 +48,34 @@
 				},
 			});
 		}
+
 	</script>
 </head>
 
 <body>
 	<div layout:fragment="content" style="
 	    padding: 6vw 0 0 6vw">
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">確認画面</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						本当に削除しますか？
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
+						<button type="button" class="btn btn-primary"
+							th:attr="onclick=|confirmDeletion('${article.id}')|">はい</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- AA-->
 		<div style="
 		    border: groove;">
 
@@ -75,9 +102,12 @@
 			</div>
 		</div>
 		<form th:action="@{/articles/delete/}" method="POST" th:object="${article}" style="margin-top: 3.6vw;">
-			<input id="js_csrf" th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}"/>
+			<input id="js_csrf" th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}" />
 			<input type="hidden" name="id" th:value="${article.id}">
-			<button type="button" th:attr="onclick=|confirmDeletion('${article.id}')|">削除</button>
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+				削除
+			</button>
 		</form>
 	</div>
 </body>
