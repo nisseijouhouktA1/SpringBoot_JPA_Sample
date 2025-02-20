@@ -18,60 +18,8 @@ h1 {
 	margin-bottom: 30px;
 }
 
-.myTable {
-	border-collapse: collapse;
-	text-align: left;
-	font-size: 16px;
-	table-layout: fixed;
-}
-
-.myTable td,
-.myTable th {
-	padding: 5px 10px;
-	border: 1px solid #ccc;
-	background-color: #ddd;
-	min-width: 15rem;
-}
-
-.myTable tr {
-	display: flex;
-	background-color: #ddd;
-}
-
-.myTable td {
-	align-content: space-evenly;
-}
-
-.myTable tr:nth-child(even) {
-	background: #ededed;
-}
-
-.myTable thead {
-	position: sticky;
-	top: 0;
-	background: #ddd;
-	z-index: 1;
-}
-
-.myTable thead th:nth-child(3),
-.myTable tbody td:nth-child(3),
-.myTable thead th:nth-child(2),
-.myTable tbody td:nth-child(2),
-.myTable thead th:nth-child(1),
-.myTable tbody td:nth-child(1) {
-	position: sticky;
-	left: 0;
-	background: #ddd;
-}
-
-.myTable thead th:nth-child(2),
-.myTable tbody td:nth-child(2) {
-	left: 100px;
-}
-
-.myTable thead th:nth-child(3),
-.myTable tbody td:nth-child(3) {
-	left: 200px;
+.table-bordered>:not(caption)>*>*{
+	min-width: 15vw;
 }
 
 .outer {

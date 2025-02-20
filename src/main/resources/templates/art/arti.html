@@ -52,49 +52,52 @@
 		<!--one to manyのサンプルの作成 -->
 		<!--デザインは暫定なので埋め込み-->
 		<h1>テーブル要素</h1>
-		<div class="_outer">
-			<table class="myTable">
-				<thead>
-					<th>Id</th>
-					<th style="width: -webkit-fill-available;">title</th>
-					<th style="width: -webkit-fill-available;"></th>
-					<th style="width: -webkit-fill-available;"></th>
+		<div class="bd-example">
+		  <table class="table table-bordered table-striped">
+		      <thead>
+		    <tr>
+		      <th scope="col">#</th>
+		      <th scope="col">Post value</th>
+		      <th scope="col">delete</th>
+		      <th scope="col">update</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			<tr th:each="article : ${articleList}">
+				<th th:attr="onclick=|jumpToArticlePageById('${article.id}')|" class="only-for-td-when-hover"
+					style="cursor: pointer;"><a th:href="@{/articles/{id}(id=${article.id})}"
+						th:id="'detailPageLink' + ${article.id}" style="text-decoration: none;color:black;"
+						aria-current="true" th:text="${article.id}">(id)</th>
+						
+				<td th:text="${article.title}" th:attr="onclick=|jumpToArticlePageById('${article.id}')|"
+					class="only-for-td-when-hover" style="width: -webkit-fill-available;cursor: pointer;">
+					(title)</td>
+				<td>
+					<form th:action="@{/articles/delete/}" method="GET" id="deleteForm">
+						<!--隠しフォームを一個作って、submitするパターンもありだけど実装が面倒かも-->
+						<!--th:valueで無いと型が指定できないから注意-->
+						<input type="hidden" name="id" th:value="${article.id}">
+						<button type="submit" class="btn btn-primary"
+							style="margin-top: 1vw;font-variant-east-asian: proportional-width;">削除</button>
+					</form>
+				</td>
+				<!--更新ボタンを押したときの処理はまだどうするか考えてない。更新ページに飛んで更新するか日成情報みたいに更新させる感じか-->
+				<!--個別ページで更新させる場合はGETで処理-->
+				<td>
+					<form th:action="@{/}" method="GET" id="updateForm">
+						<!--隠しフォームを一個作って、submitするパターンもありだけど実装が面倒かも-->
+						<!--th:valueで無いと型が指定できないから注意-->
+						<input type="hidden" name="id" th:value="${article.id}">
+						<!--課題　ここを開発コンソールで見たときに隠ぺいできてない-->
+						<button type="button" th:attr="onclick=|jumpToUpdateDetail(event,'${article.id}')|"
+							id="aa" class="btn btn-primary"
+							style="margin-top: 1vw;margin-left: 1vw;font-variant-east-asian: proportional-width;">変更</button>
+					</form>
+				</td>
+			</tr>
+		  </tbody>
 
-				</thead>
-				<tbody>
-					<tr th:each="article : ${articleList}">
-						<td th:attr="onclick=|jumpToArticlePageById('${article.id}')|" class="only-for-td-when-hover"
-							style="cursor: pointer;"><a th:href="@{/articles/{id}(id=${article.id})}"
-								th:id="'detailPageLink' + ${article.id}" style="text-decoration: none;color:black;"
-								aria-current="true" th:text="${article.id}">(id)</td>
-						<td th:text="${article.title}" th:attr="onclick=|jumpToArticlePageById('${article.id}')|"
-							class="only-for-td-when-hover" style="width: -webkit-fill-available;cursor: pointer;">
-							(title)</td>
-						<td>
-							<form th:action="@{/articles/delete/}" method="GET" id="deleteForm">
-								<!--隠しフォームを一個作って、submitするパターンもありだけど実装が面倒かも-->
-								<!--th:valueで無いと型が指定できないから注意-->
-								<input type="hidden" name="id" th:value="${article.id}">
-								<button type="submit" class="btn btn-primary"
-									style="margin-top: 1vw;font-variant-east-asian: proportional-width;">削除</button>
-							</form>
-						</td>
-						<!--更新ボタンを押したときの処理はまだどうするか考えてない。更新ページに飛んで更新するか日成情報みたいに更新させる感じか-->
-						<!--個別ページで更新させる場合はGETで処理-->
-						<td>
-							<form th:action="@{/}" method="GET" id="updateForm">
-								<!--隠しフォームを一個作って、submitするパターンもありだけど実装が面倒かも-->
-								<!--th:valueで無いと型が指定できないから注意-->
-								<input type="hidden" name="id" th:value="${article.id}">
-								<!--課題　ここを開発コンソールで見たときに隠ぺいできてない-->
-								<button type="button" th:attr="onclick=|jumpToUpdateDetail(event,'${article.id}')|"
-									id="aa" class="btn btn-primary"
-									style="margin-top: 1vw;margin-left: 1vw;font-variant-east-asian: proportional-width;">変更</button>
-							</form>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		  </table>
 		</div>
 		<!-- ↓ここに境界値の問題がある。
 			てかpaging.jsに修正箇所がある。
