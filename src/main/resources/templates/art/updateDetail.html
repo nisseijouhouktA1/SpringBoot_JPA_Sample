@@ -36,7 +36,7 @@
 
 			</div>
 		</div>
-		<form action="/articles/update/" method="post" th:object="${article}" style="margin-top: 3.6vw;">
+		<form th:action="@{/articles/update/}" method="post" th:object="${article}" style="margin-top: 3.6vw;">
 			<label for="name">テスト用保存文字列:</label>
 			<input type="text" id="pageId" th:field="*{id}" hidden required>
 			<input type="text" id="name" th:field="*{title}" required>
