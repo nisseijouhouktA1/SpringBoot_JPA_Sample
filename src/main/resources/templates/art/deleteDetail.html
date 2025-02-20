@@ -37,7 +37,7 @@
 					'X-CSRF-TOKEN': csrfToken  // CSRF トークンをヘッダーに追加
 				},
 				success: function (response) {
-					alert("削除が完了しました。");
+					//alert("削除が完了しました。");
 					// location.reload(); // ページをリロードして更新 (削除したため存在しない。敢えて例外ハンドラでリダイレクトさせるかここからリダイレクトさせる
 					//かは場合によるかも)
 					window.location.href = ('/articles/');
