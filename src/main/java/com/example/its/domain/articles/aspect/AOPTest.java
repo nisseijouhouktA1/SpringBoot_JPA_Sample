@@ -2,10 +2,12 @@ package com.example.its.domain.articles.aspect;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,39 +31,52 @@ import org.springframework.stereotype.Component;
 public class AOPTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(AOPTest.class);
+	//フォーマット整える
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	
+	  private ThreadLocal<Long> threadStartTime = new ThreadLocal<>();
 
 	//引数だけのパターン、戻り値だけのパターンで2つメソッドを実装する。
 	//これが終わってから。(いったんコミットを入れること)
 	//@afterReturningを調べる。
-	//多分これ全部
 	//あんまり綺麗じゃない書き方かも
-	@Around("execution(* com.example.*.*.*.*(..))")
-	public Object around(ProceedingJoinPoint joinpoint) {
+	/*
+	 *@Beforeアノテーションは非常に便利ですが、いくつか注意すべきポイントがあります。
+	 *例えば、@Beforeで例外をスローすると、対象のメソッドが実行されなくなります。
+	 *また、処理が重い場合はパフォーマンスに影響を与える可能性があります。
+	 * ログ記録や簡単なチェック処理など、比較的軽い処理に留めるほうが良いかも。
+	 * 非同期処理とかは除外しよう。
+	 * ProceedingJoinPointは@around限定だ。
+	 * 
+	 * */
+	@Before("execution(* com.example.*.*.*.*(..))")
+	public void before(JoinPoint joinpoint) {
 		long start = System.currentTimeMillis();
-
+		threadStartTime.set(start);
+		/*
+		 * Arrays.toString()
+		 * 
+		 * 
+		 * */		
 		LocalDateTime startTime = LocalDateTime.now();
-		//フォーマット整える
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedStartTime = startTime.format(formatter);
-		logger.info("method start :" + joinpoint.getSignature() + "at :" + formattedStartTime);
-		Object result = null;
-		try {
-			//結果を取得しないと呼び出し元に結果が返っていかない
-			//このAOPとかいうやつはそれぞれのメソッド処理にサイレントで組み込まれていることに注意。
-			result = joinpoint.proceed();
-		} catch (Throwable e) {
-			e.printStackTrace();
+		logger.info("------------------------------------メソッドの実行前-------------------------------");
+		logger.info("method start : " + joinpoint.getSignature() + " at :" + formattedStartTime);
+		//mustacheフォーマットで書くと読みやすい。
+		 logger.info("arguments as : {}", Arrays.toString(joinpoint.getArgs()));
 
-			//細かい例外に合わせてログを振り分けると良いかもしれないです。
-			//今回は省く。
-			logger.error("Error番号XXが発生しました。", e);
-		}
+
+	}
+	
+	//正常にメソッドが終了した場合
+	//正常にメソッドが終了しなかったときは別に対応する。
+	@AfterReturning(pointcut = "execution(* com.example.*.*.*.*(..))", returning = "result")
+	public void normalReturn(JoinPoint joinpoint,Object result) {
+		long start = threadStartTime.get();
 		long end = System.currentTimeMillis();
+		logger.info("------------------------------------メソッドの実行後-------------------------------");
 		logger.info("メソッドの実行時間は：" + (end - start) + "ms");
-		LocalDateTime endTime = startTime.plusSeconds((end - start) / 1000);
-		String formattedEndTime = endTime.format(formatter);
-		logger.info("method end :" + "at :" + formattedEndTime);
-
-		return result;
+		logger.info("return value as :" + result);
+		
 	}
 }
