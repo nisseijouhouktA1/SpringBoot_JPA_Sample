@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+	<nav layout:fragment="header" class="navbar navbar-dark bg-dark static-top">
+
+	  <a class="navbar-brand mr-1" href="/">Start Bootstrap</a>
+	
+	  <div class="btn-group">
+	    <button type="button"  style="background-color:transparent;font-size: small;" class="btn dropdown-toggle material-symbols-outlined" data-bs-toggle="dropdown" aria-expanded="false">
+			<span style="color: white;" class="material-symbols-outlined">
+			test
+			</span>
+	    </button>
+	    <ul id="pc-dropdown-list" class="dropdown-menu animate slideIn">
+	      <li><a id="userName" class="dropdown-item" th:href="@{/}">(ユーザー名)</a></li>
+	      <li><a class="dropdown-item" href="#">DashBoard link here</a></li>
+	      <li><hr class="dropdown-divider"></li>
+	      <li class="text-center"><a th:href="@{/logout}" style="text-decoration:none;" aria-current="true">ログアウト</a></li>
+	    </ul>
+	  </div>
+	  <script>
+		// ページが読み込まれたときに、APIからユーザー名を取得
+		//読み込み順序ではなく::fragmentのnavタグの中に書かなければscriptは実行されない
+				//axiosやなんなりを使って非同期処理を関数化して別ファイルに分離するとベターだと思う。
+				$(document).ready(function() {
+				console.log("APIリクエストを送信します");
+				    $.get("/usrname/", function(data) {
+				        // APIから返されたユーザー名を#usernameに表示
+				        $("#userName").text(data);
+				    }).fail(function() {
+				        // エラー時
+				        $("#userName").text("エラーが発生しました");
+				    });
+				});
+	  </script>
+	  <!-- Navbar Search -->
+	  <!--
+	  <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+	    <div class="input-group">
+	      <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+	      <div class="input-group-append">
+	        <button class="btn btn-primary" type="button">
+	          <i class="fas fa-search"></i>
+	        </button>
+	      </div>
+	    </div>
+	  </form>
+	  
+	  
+	  トグルバーを付けてログアウト以外に切り替えても可
+	  -->
+
+	  <!-- Navbar -->
+
+	</nav>
+</body>
+</html>
