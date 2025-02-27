@@ -10,36 +10,48 @@
 
 <body>
 	<div layout:fragment="content" style="
-	    padding: 6vw 0 0 6vw">
+	    padding: 6vw 0 0 6vw;display: flex;">
+		<!-- テーブルは同じスタイルに統一しているけど細部は違うことに注意-->
 		<div style="
-		    border: groove;">
+		    border: groove;height: fit-content;">
 
-			<div class="list-group">
-				<div class="d-flex gap-2 w-100 justify-content-between">
-					<div style="background: aquamarine;">
-						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
-							th:text="'long id : ('+ ${article.id} + ')'">(id)</h6>
-					</div>
-					<div style="background: aqua">
-						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
-							th:text="'String title : ('+ ${article.title} + ')'">(title)</h6>
-					</div>
-					<div style="background: beige;">
-						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
-							th:text="'String impressions : ('+ ${article.impressions} + ')'">(impressions)</h6>
-					</div>
-					<div style="background: antiquewhite">
-						<h6 class="mb-0 fs-3" style="font-family:system-ui, -apple-system;"
-							th:text="'boolean iine : ('+ ${article.iine} + ')'">(iine)</h6>
-					</div>
-				</div>
+			<div class="bd-example">
+				<table class="table table-success table-striped" style="margin-bottom: 0;">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">long id : </th>
+							<td th:text="${article.id}">(id)</td>
+						</tr>
+						<tr>
+							<th scope="row">String title : </th>
+							<td th:text="${article.title}">(title)</td>
+						</tr>
+						<tr>
+							<th scope="row">String impressions : </th>
+							<td th:text="${article.impressions}">(impressions)</td>
+						</tr>
+						<tr>
+							<th scope="row">boolean iine : </th>
+							<td th:text="${article.iine}">(iine)</td>
+						</tr>
+					</tbody>
 
+				</table>
 			</div>
 		</div>
-		<form th:action="@{/articles/update/}" method="post" th:object="${article}" style="margin-top: 3.6vw;">
-			<label for="name">テスト用保存文字列:</label>
+		<form th:action="@{/articles/update/}" method="post" th:object="${article}" style="margin-left: 3vw;">
+			
 			<input type="text" id="pageId" th:field="*{id}" hidden required>
-			<input type="text" id="name" th:field="*{title}" required>
+			<div class="d-flex flex-column">
+				<label class="mb-1" for="name">テスト用保存文字列:</label>
+				<input type="text" id="name" th:field="*{title}" required>
+			</div>
 
 			<div class="text">ドロップダウン 評価選択</div>
 			<div class="t-dropdown-block">
