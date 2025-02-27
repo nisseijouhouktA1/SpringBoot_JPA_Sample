@@ -2,6 +2,7 @@
 
 /*
 Spring AIを用いたサンプルの追加(OpenAIか無料のもの) - 延期
+
 code rabbit(コードレビューを行うAI)を導入した
 */
 
