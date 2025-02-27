@@ -9,8 +9,82 @@
 <body>
 	<nav layout:fragment="header" class="navbar navbar-dark bg-dark static-top">
 
-		<a class="navbar-brand mr-1" href="/">Start Bootstrap</a>
+		<a id="navBar-logo-link" class="navbar-brand mr-1" href="/">Start Bootstrap</a>
 
+		<div class="accordion" id="myAccordion">
+			<!-- アコーディオン項目 1 -->
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="headingOne">
+					<button class="accordion-button" type="button" data-bs-toggle="collapse"
+						data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+						<span style="color: white;" class="material-symbols-outlined">
+											density_small
+										</span>
+					</button>
+				</h2>
+				<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+					data-bs-parent="#myAccordion">
+					<div class="accordion-body">
+						<p>リストを含む内容:</p>
+						<ul class="list-group">
+							<li><a id="userName" class="dropdown-item" th:href="@{/}">(ユーザー名)</a></li>
+							<li><a class="dropdown-item" href="#">DashBoard link here</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li class="text-center"><a th:href="@{/logout}" style="text-decoration:none;"
+									aria-current="true">ログアウト</a></li>
+							<li>
+								<a href="#" class="nav-link active" th:href="@{/}" aria-current="page">
+									<svg class="bi pe-none me-2" width="16" height="16">
+										<use xlink:href="#home"></use>
+									</svg>
+									トップページ
+								</a>
+							</li>
+							<li>
+								<a href="#" class="nav-link text-white">
+									<svg class="bi pe-none me-2" width="16" height="16">
+										<use xlink:href="#speedometer2"></use>
+									</svg>
+									Dashboad
+								</a>
+							</li>
+							<li>
+								<a href="#" class="nav-link text-white">
+									<svg class="bi pe-none me-2" width="16" height="16">
+										<use xlink:href="#table"></use>
+									</svg>
+									Orders
+								</a>
+							</li>
+							<li>
+								<a href="#" class="nav-link text-white" th:href="@{/articles/}">
+									<svg class="bi pe-none me-2" width="16" height="16">
+										<use xlink:href="#grid"></use>
+									</svg>
+									フォーム入力表示テスト
+								</a>
+							</li>
+							<li>
+								<a href="#" class="nav-link text-white" th:href="@{/articles/formTest/}">
+									<svg class="bi pe-none me-2" width="16" height="16">
+										<use xlink:href="#people-circle"></use>
+									</svg>
+									フォーム入力テスト
+								</a>
+							</li>
+							<li>
+								<!-- "@{/issues}" @ はthymeleafでリンクを表す記法 -->
+								<!-- springboot 起動せずともhtmlを確認出来る。タイムリーフ挟まないナチュラルテンプレート -->
+								<a class="nav-link text-white" href="./art/arti.html"
+									th:href="@{/articles/}">記事一覧(ペジネーションテスト)</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="btn-group">
 			<button type="button" style="background-color:transparent;font-size: small;"
 				class="btn dropdown-toggle material-symbols-outlined" data-bs-toggle="dropdown" aria-expanded="false">

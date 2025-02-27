@@ -85,6 +85,8 @@ body {
 @media screen and (max-width:768px) {
 /*
 カスタムでレスポンシブにする場合はcssでの制御も考えておく
+bootstrapだけで何とかしたい場合は、d-md-hogehogeで対応する必要あり。
+d-mdはPC画面以上で適用
 
 */
 		#pc-Sidebar {
@@ -93,7 +95,16 @@ body {
 	#pc-dropdown-list{
 		display: none;
 	}
-	
+	#navBar-logo-link{
+		display: none;
+	}
+	.btn-group{
+		margin-left: auto;
+		margin-right: auto;
+	}
+span.material-symbols-outlined{
+		font-size: 36px;
+	}
 	
 }
 
