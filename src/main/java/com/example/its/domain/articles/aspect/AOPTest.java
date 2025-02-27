@@ -60,10 +60,10 @@ public class AOPTest {
 		 * */		
 		LocalDateTime startTime = LocalDateTime.now();
 		String formattedStartTime = startTime.format(formatter);
-		logger.info("------------------------------------メソッドの実行前-------------------------------");
-		logger.info("method start : " + joinpoint.getSignature() + " at :" + formattedStartTime);
+		logger.trace("------------------------------------メソッドの実行前-------------------------------");
+		logger.trace("method start : " + joinpoint.getSignature() + " at :" + formattedStartTime);
 		//mustacheフォーマットで書くと読みやすい。
-		 logger.info("arguments as : {}", Arrays.toString(joinpoint.getArgs()));
+		 logger.trace("arguments as : {}", Arrays.toString(joinpoint.getArgs()));
 
 
 	}
@@ -74,9 +74,9 @@ public class AOPTest {
 	public void normalReturn(JoinPoint joinpoint,Object result) {
 		long start = threadStartTime.get();
 		long end = System.currentTimeMillis();
-		logger.info("------------------------------------メソッドの実行後-------------------------------");
-		logger.info("メソッドの実行時間は：" + (end - start) + "ms");
-		logger.info("return value as :" + result);
+		logger.trace("------------------------------------メソッドの実行後-------------------------------");
+		logger.trace("メソッドの実行時間は：" + (end - start) + "ms");
+		logger.trace("return value as :" + result);
 		
 	}
 }
