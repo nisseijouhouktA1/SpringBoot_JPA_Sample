@@ -2,84 +2,70 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/layout}">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Articleの個別ページ</title>
-	<link rel="stylesheet" type="text/css" href="/css/dropdown.css" />
-	<script src="/js/dropdown.js"></script>
+    <meta charset="UTF-8">
+    <title>Articleの個別ページ</title>
+    <link rel="stylesheet" type="text/css" href="/css/dropdown.css" />
+    <script src="/js/dropdown.js"></script>
 </head>
 
 <body>
-	<div layout:fragment="content" style="
-	    padding: 6vw 0 0 6vw;display: flex;">
-		<!-- テーブルは同じスタイルに統一しているけど細部は違うことに注意-->
-		<div style="
-		    border: groove;height: fit-content;">
-
-			<div class="bd-example">
-				<table class="table table-success table-striped" style="margin-bottom: 0;">
-					<thead>
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">value</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">long id : </th>
-							<td th:text="${article.id}">(id)</td>
-						</tr>
-						<tr>
-							<th scope="row">String title : </th>
-							<td th:text="${article.title}">(title)</td>
-						</tr>
-						<tr>
-							<th scope="row">String impressions : </th>
-							<td th:text="${article.impressions}">(impressions)</td>
-						</tr>
-						<tr>
-							<th scope="row">boolean iine : </th>
-							<td th:text="${article.iine}">(iine)</td>
-						</tr>
-					</tbody>
-
-				</table>
-			</div>
-		</div>
-		<form th:action="@{/articles/update/}" method="post" th:object="${article}" style="margin-left: 3vw;">
-			
-			<input type="text" id="pageId" th:field="*{id}" hidden required>
-			<div class="d-flex flex-column">
-				<label class="mb-1" for="name">テスト用保存文字列:</label>
-				<input type="text" id="name" th:field="*{title}" required>
-			</div>
-
-			<div class="text">ドロップダウン 評価選択</div>
-			<div class="t-dropdown-block">
-				<select name="impressions" class="t-dropdown-input" th:field="*{impressions}" value="*{impressions}"
-					required>
-					<option value="" th:selected="${impressions == ''}">--選択してください--</option>
-					<option value="very good" th:selected="${impressions == 'very good'}">very good</option>
-					<option value="good" th:selected="${impressions == 'good'}">good</option>
-					<option value="irrelevant" th:selected="${impressions == 'irrelevant'}">irrelevant</option>
-					<option value="bad" th:selected="${impressions == 'bad'}">bad</option>
-					<option value="very bad" th:selected="${impressions == 'very bad'}">very bad</option>
-				</select>
-			</div>
-			<div class="radiobottun-group" style="padding-bottom: 2vw;">
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-						value="true" th:field="*{iine}">
-					<label class="form-check-label" for="inlineRadio1">true</label>
-				</div>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-						value="false" th:field="*{iine}">
-					<label class="form-check-label" for="inlineRadio2">false</label>
-				</div>
-			</div>
-			<button type="submit">変更</button>
-		</form>
-	</div>
+    <div layout:fragment="content" style="padding: 6vw 0 0 6vw; display: flex;width: 100%;">
+        <div style="height: fit-content; padding: 1rem; width: 80%; max-width: 800px;">
+            <form th:action="@{/articles/formTest/}" method="post" th:object="${article}">
+                <table class="table table-success table-striped" style="margin-bottom: 0;">
+                    <thead>
+                        <tr>
+                            <th scope="col">項目</th>
+                            <th scope="col">値</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">ID:</th>
+                            <td>
+                                <input type="text" id="pageId" th:field="*{id}" hidden required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">タイトル:</th>
+                            <td>
+                                <input type="text" id="name" th:field="*{title}" required class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">インプレッション:</th>
+                            <td>
+                                <select name="impressions" class="form-select" th:field="*{impressions}" required>
+                                    <option value="">--選択してください--</option>
+                                    <option value="very good">very good</option>
+                                    <option value="good">good</option>
+                                    <option value="irrelevant">irrelevant</option>
+                                    <option value="bad">bad</option>
+                                    <option value="very bad">very bad</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">いいね:</th>
+                            <td>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="iine" id="inlineRadio1" value="true" th:field="*{iine}">
+                                    <label class="form-check-label" for="inlineRadio1">true</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="iine" id="inlineRadio2" value="false" th:field="*{iine}">
+                                    <label class="form-check-label" for="inlineRadio2">false</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary">送信</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -15,7 +15,7 @@
 			<!-- アコーディオン項目 1 -->
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="headingOne">
-					<button class="accordion-button" type="button" data-bs-toggle="collapse"
+					<button id="button-css-forsener" class="accordion-button" type="button" data-bs-toggle="collapse"
 						data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 						<span style="color: white;" class="material-symbols-outlined">
 											density_small
@@ -27,15 +27,12 @@
 					<div class="accordion-body">
 						<p>リストを含む内容:</p>
 						<ul class="list-group">
-							<li><a id="userName" class="dropdown-item" th:href="@{/}">(ユーザー名)</a></li>
-							<li><a class="dropdown-item" href="#">DashBoard link here</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li class="text-center"><a th:href="@{/logout}" style="text-decoration:none;"
+							<li><a id="userName" class="dropdown-item text-white" th:href="@{/}">(ユーザー名)</a></li>
+							<li><a class="dropdown-item text-white" href="#">DashBoard link here</a></li>
+							<li style="list-style: none;"><a class="text-white" th:href="@{/logout}" style="text-decoration:none;"
 									aria-current="true">ログアウト</a></li>
 							<li>
-								<a href="#" class="nav-link active" th:href="@{/}" aria-current="page">
+								<a href="#" class="nav-link active text-white" th:href="@{/}" aria-current="page">
 									<svg class="bi pe-none me-2" width="16" height="16">
 										<use xlink:href="#home"></use>
 									</svg>
@@ -77,7 +74,7 @@
 							<li>
 								<!-- "@{/issues}" @ はthymeleafでリンクを表す記法 -->
 								<!-- springboot 起動せずともhtmlを確認出来る。タイムリーフ挟まないナチュラルテンプレート -->
-								<a class="nav-link text-white" href="./art/arti.html"
+								<a class="nav-link" href="./art/arti.html"
 									th:href="@{/articles/}">記事一覧(ペジネーションテスト)</a>
 							</li>
 						</ul>
@@ -85,7 +82,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="btn-group">
+		<div id="right-button-group" class="btn-group">
 			<button type="button" style="background-color:transparent;font-size: small;"
 				class="btn dropdown-toggle material-symbols-outlined" data-bs-toggle="dropdown" aria-expanded="false">
 				<span style="color: white;" class="material-symbols-outlined">
@@ -171,6 +168,18 @@
 					// エラー時
 					$("#userName").text("エラーが発生しました");
 				});
+			});
+			//最終手段としてcss変更の為のjqueryという手段を残しておく。
+			$(document).ready(function(){
+				$(".accordion-button").css({
+				    "background": "#212529",
+				    "box-shadow": "inset 0 calc(-1* var(--bs-accordion-border-width)) 0 #000000",
+				    "border": "1px solid #444",
+					"--bs-accordion-btn-focus-box-shadow:":"none",
+					"--bs-accordion-btn-active-icon":"none",
+					"border":"none"
+				});
+				$(".accordion-item").css("border","none");
 			});
 		</script>
 		<!-- Navbar Search -->

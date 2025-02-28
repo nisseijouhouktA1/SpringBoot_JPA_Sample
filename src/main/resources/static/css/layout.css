@@ -80,6 +80,9 @@ body {
 	#sp-dropdown-list{
 		display: none;
 	}	
+	#myAccordion{
+		display: none;
+	}
 }
 
 @media screen and (max-width:768px) {
@@ -98,18 +101,35 @@ d-mdはPC画面以上で適用
 	#navBar-logo-link{
 		display: none;
 	}
-	.btn-group{
+#myAccordion{
 		margin-left: auto;
 		margin-right: auto;
 	}
 span.material-symbols-outlined{
 		font-size: 36px;
 	}
-	
-}
+#right-button-group{
+	display: none;	
+}	
+};
+
 
 /* CSS追加 */
 
+.acordion-item{
+		border: none;
+	}
+	
+div.accordion{
+	background-color:#212529;
+}
+button.accordion-button.collapsed{
+	background-color: #212529;
+}
+.accordion-body{
+	background-color: #212529;
+}
+	
 #pc-Sidebar {
   min-height: 100vh;
 }
