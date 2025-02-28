@@ -11,7 +11,7 @@
 <body>
     <div layout:fragment="content" style="padding: 6vw 0 0 6vw; display: flex;width: 100%;">
         <div style="height: fit-content; padding: 1rem; width: 80%; max-width: 800px;">
-            <form th:action="@{/articles/formTest/}" method="post" th:object="${article}">
+            <form th:action="@{/articles/update/}" method="post" th:object="${article}">
                 <table class="table table-success table-striped" style="margin-bottom: 0;">
                     <thead>
                         <tr>
@@ -23,7 +23,8 @@
                         <tr>
                             <th scope="row">ID:</th>
                             <td>
-                                <input type="text" id="pageId" th:field="*{id}" hidden required>
+								<input type="text" id="pageId" th:field="*{id}" hidden required>
+                                <p  th:text="*{id}">(id)</p>
                             </td>
                         </tr>
                         <tr>

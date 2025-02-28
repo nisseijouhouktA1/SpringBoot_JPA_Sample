@@ -54,7 +54,7 @@
 
 <body>
 	<div layout:fragment="content" style="
-	    padding: 6vw 0 0 6vw">
+	    padding: 6vw 0 0 6vw;width: 100%;">
 
 		<!-- Modal -->
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,25 +83,25 @@
 				<table class="table table-success table-striped" style="margin-bottom: 0;">
 					<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">value</th>
+							<th style="width:33.3%" scope="col">#</th>
+							<th style="width:66.7%" scope="col">value</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<th scope="row">long id : </th>
+							<th scope="row">id : </th>
 							<td th:text="${article.id}">(id)</td>
 						</tr>
 						<tr>
-							<th scope="row">String title : </th>
+							<th scope="row">タイトル : </th>
 							<td th:text="${article.title}">(title)</td>
 						</tr>
 						<tr>
-							<th scope="row">String impressions : </th>
+							<th scope="row">インプレッション : </th>
 							<td th:text="${article.impressions}">(impressions)</td>
 						</tr>
 						<tr>
-							<th scope="row">boolean iine : </th>
+							<th scope="row">いいね : </th>
 							<td th:text="${article.iine}">(iine)</td>
 						</tr>
 					</tbody>
